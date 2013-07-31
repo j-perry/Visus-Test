@@ -67,8 +67,7 @@ public class TestTimerConvert extends AndroidTestCase {
 		milliseconds = 180000; // mins
 		milliseconds += 30000; // secs
 		
-		tConvert.minutesAndSecondsToMilliseconds(minutes, seconds);
-		assertEquals(milliseconds, tConvert.getMillisecondsFromMinutesAndSeconds() );
+		assertEquals(milliseconds, tConvert.minutesAndSecondsToMilliseconds(minutes, seconds) );
 	}
 
 }
