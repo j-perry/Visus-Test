@@ -8,7 +8,7 @@ import org.junit.*;
 
 import android.test.AndroidTestCase;
 
-import com.visus.entities.Session;
+import com.visus.entities.sessions.Session;
 
 /**
  * Test units for entity class Session
@@ -21,8 +21,9 @@ public class TestSession extends AndroidTestCase {
 
 	private Session session;
 	
-	private final static String dayFormat = "EEEE";
-	private final static String monthFormat = "MMMM";
+	private final static String dayNoFormat = "dd";
+	private final static String dayFormat = "EEE";
+	private final static String monthFormat = "MMM";
 	private final static String yearFormat = "yyyy";
 	
 	// we'll miss seconds (:ss) off. No need to get too precise!
@@ -39,6 +40,10 @@ public class TestSession extends AndroidTestCase {
 		super.tearDown();
 	}
 	
+	/**
+	 * Test used when collecting dates from the database for each session.
+	 * Test used to inform and verify format of the required date format.
+	 */
 	public void testDateFormat() {
 		// validation variables
 		String valDay = "Saturday ";
@@ -47,9 +52,10 @@ public class TestSession extends AndroidTestCase {
 		String valDate = valDay + valMonth + valYear;
 				
 		// day, month, year
-		session.setDate(new SimpleDateFormat(dayFormat).format(new Date()),
-						new SimpleDateFormat(monthFormat).format(new Date()), 
-						new SimpleDateFormat(yearFormat).format(new Date()) );
+		session.setDate(new SimpleDateFormat(dayNoFormat).format(new Date() ),
+				        new SimpleDateFormat(dayFormat).format(new Date() ),
+						new SimpleDateFormat(monthFormat).format(new Date() ), 
+						new SimpleDateFormat(yearFormat).format(new Date() ));
 		
 		/* 	Assert validation data co-ordinates with the formatted types:
 		*
@@ -59,6 +65,13 @@ public class TestSession extends AndroidTestCase {
 		*/ 
 		assertEquals(valDate,
 				     session.getDate() );
+	}
+	
+	public void testDayNoFormat() {
+		int valDayNo = 15;	
+		
+		session.setDayNo(Integer.parseInt(new SimpleDateFormat(dayNoFormat).format(new Date()) ));
+		assertEquals(valDayNo, session.getDayNo());
 	}
 			
 	/**
