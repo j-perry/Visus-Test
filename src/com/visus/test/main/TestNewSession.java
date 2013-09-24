@@ -49,8 +49,8 @@ public class TestNewSession extends AndroidTestCase {
 		
 		float product = elapsedMinutes + tmpElapsedSeconds;
 		
-		/*****************************************************
-		 * 
+		/*****************************************************************************************
+		 * 		Calculate overlap in seconds and true representation of accumulated duration
 		 */
 		// take a copy of session time (just created) - mm:ss
 		float productCpy = product;
