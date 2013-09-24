@@ -39,39 +39,33 @@ public class TestSession extends AndroidTestCase {
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
-	
-	/**
-	 * Test used when collecting dates from the database for each session.
-	 * Test used to inform and verify format of the required date format.
-	 */
-	public void testDateFormat() {
-		// validation variables
-		String valDay = "Saturday ";
-		String valMonth = "June ";
-		String valYear = "2013";
-		String valDate = valDay + valMonth + valYear;
-				
-		// day, month, year
-		session.setDate(new SimpleDateFormat(dayNoFormat).format(new Date() ),
-				        new SimpleDateFormat(dayFormat).format(new Date() ),
-						new SimpleDateFormat(monthFormat).format(new Date() ), 
-						new SimpleDateFormat(yearFormat).format(new Date() ));
 		
-		/* 	Assert validation data co-ordinates with the formatted types:
-		*
-		*	EEEE (day), 
-		*	MMMM (month), 
-		*	yyyy (year)
-		*/ 
-		assertEquals(valDate,
-				     session.getDate() );
-	}
-	
 	public void testDayNoFormat() {
 		int valDayNo = 15;	
 		
 		session.setDayNo(Integer.parseInt(new SimpleDateFormat(dayNoFormat).format(new Date()) ));
 		assertEquals(valDayNo, session.getDayNo());
+	}
+	
+	public void testDayFormat() {
+		String valDay = "Thur";
+		
+		session.setDay(new SimpleDateFormat(dayFormat).format(new Date() ));
+		assertEquals(valDay, session.getDay());
+	}
+	
+	public void testMonthFormat() {
+		String valMonth = "Aug";
+		
+		session.setMonth(new SimpleDateFormat(monthFormat).format(new Date() ));
+		assertEquals(valMonth, session.getMonth());
+	}
+	
+	public void testYearFormat() {
+		int valYear = 2015;
+		
+		session.setYear(Integer.parseInt( new SimpleDateFormat(yearFormat).format(new Date() ) ));
+		assertEquals(valYear, session.getYear());
 	}
 			
 	/**
@@ -91,10 +85,39 @@ public class TestSession extends AndroidTestCase {
 	 */
 	public void testSessionDurationFormat() {
 		int min = 29;
-		int secs = 39;		
+		int secs = 39;
 		session.setDuration(min, secs);
 		
 		// assert the value of valSessionTime equals that of int vars
 		assertTrue(session.getDuration().equals(min + ":" + secs));
-	}	
+	}
+	
+	public void testComputeExistingDurationToday() {
+		float existingDurationToday = 17.57f; // 17-mins
+		float durationToday = 0.0f;
+		float testResult = 21.27f;
+		
+		// compute session
+		int mins = 3; // mins
+		float tmpSessionSecs = (float) 7 / 10.0f; // secs
+		float product = (float) mins + tmpSessionSecs;
+		
+		// compute duration today
+		durationToday = (float) existingDurationToday + product;
+				
+		assertEquals(testResult, durationToday);
+	}
+	
+	public void testComputeExistingDurationMonth() {
+		float existingDurationMonth = 45.09f; // 41.09-mins
+		float durationMonth = 0.0f;
+		double tmpDurationMonth = 0.0f;
+		float session = 5.42f; // 5 mins + 42 secs
+		float testResult = 50.51f;
+		// compute duration
+		tmpDurationMonth = Math.round( (existingDurationMonth + session) * 100) / 100.0;
+		durationMonth = (float) tmpDurationMonth;
+						
+		assertEquals(testResult, durationMonth);
+	}
 }

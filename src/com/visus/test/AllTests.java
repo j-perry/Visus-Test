@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.visus.test.database.TestSessionHandler;
 import com.visus.test.entities.*;
 
 import android.test.AndroidTestCase;
@@ -11,7 +12,8 @@ import android.test.AndroidTestCase;
 @RunWith(Suite.class)
 @SuiteClasses({ 
 	TestUser.class, 
-	TestSession.class
+	TestSession.class,
+	TestSessionHandler.class
 })
 public class AllTests extends AndroidTestCase {
 
