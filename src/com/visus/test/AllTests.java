@@ -11,7 +11,6 @@ import android.test.AndroidTestCase;
 
 @RunWith(Suite.class)
 @SuiteClasses({ 
-	TestUser.class, 
 	TestSession.class,
 	TestSessionHandler.class
 })
