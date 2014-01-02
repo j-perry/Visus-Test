@@ -37,13 +37,24 @@ public class TestSortActivities extends AndroidTestCase {
 		Stack<double []> activities = new Stack<double []>();
 		ActivitiesManager am = new ActivitiesManager();
 		double [] activity1 = { 24.59, 24.59, 14.31, 7.11 };
-		double [] activity2 = { 24.20, 21.31, 14.31, 7.11, 13.41, 24.59 };
-		double [] activity3 = { 24.59, 24.59, 14.31, 7.11 };
-		double [] activity4 = { 24.59, 24.59, 14.31, 7.11 };
+		double [] activity2 = { 24.20, 21.31, 14.31, 7.11, 13.41 };
+		double [] activity3 = { 10.40, 24.59, 3.51, 7.03 };
+		double [] activity4 = { 2.39, 12.19, 18.12, 22.13 };
+		
+		// test results
+		double testResult1 = 70.60;
+		double testResult2 = 80.34;
+		double testResult3 = 45.53;
+		double testResult4 = 54.83;
+		String testResult = new String(String.valueOf(testResult2) + ", " +
+								   	   String.valueOf(testResult1) + ", " +
+								       String.valueOf(testResult4) + ", " +
+								       String.valueOf(testResult3) );
+		String result = null;
 		
 		@SuppressWarnings("unused")
 		double [] unsortedActivities = null,
-				 sortedActivities= null;
+				  sortedActivities= null;
 		int i = 0;
 		
 		activities.push(activity1);
@@ -61,7 +72,12 @@ public class TestSortActivities extends AndroidTestCase {
 		
 		sortedActivities = am.sort(unsortedActivities);
 		
+		result = new String(String.valueOf(sortedActivities[0]) + ", " +
+							String.valueOf(sortedActivities[1]) + ", " +
+							String.valueOf(sortedActivities[2]) + ", " +
+							String.valueOf(sortedActivities[3]) );
+		
 		// check whether sorted results match with sorted results defined
-//		assertTrue();
+		assertEquals(result, testResult);
 	}
 }
