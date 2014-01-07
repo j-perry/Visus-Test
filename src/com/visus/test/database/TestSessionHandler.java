@@ -52,6 +52,7 @@ public class TestSessionHandler extends AndroidTestCase {
 														  "WHERE " + ISessionTable.KEY_USER_ID + " = 1");
 		StringBuilder qryTestActual = new StringBuilder();
 
+		// query components
 		String fields = "SELECT * ";
 		String dbTable = "FROM " + ISessionTable.TABLE_NAME + " ";
 		String whereCond = "WHERE " + ISessionTable.KEY_USER_ID + " = 1";
