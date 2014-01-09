@@ -1,12 +1,8 @@
 package com.visus.test.settings.activities;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,9 +14,13 @@ import android.test.AndroidTestCase;
 import android.util.Log;
 
 public class TestSortActivities extends AndroidTestCase {
-
-	public TestSortActivities() {
-	}
+	
+	private final Double [] activity1 = { 24.59, 24.59, 14.31, 7.11 };
+	private final Double [] activity2 = { 24.20, 21.31, 14.31, 7.11, 13.41 };
+	private final Double [] activity3 = { 10.40, 24.59, 3.51, 7.03 };
+	private final Double [] activity4 = { 2.39, 12.19, 18.12, 22.13 };
+	
+	private StringBuilder testResult;
 
 	@Before
 	public void setUp() throws Exception {
@@ -40,21 +40,28 @@ public class TestSortActivities extends AndroidTestCase {
 		// activity 'n'
 		Stack<Double []> activities = new Stack<Double []>();
 		ActivitiesManager am = new ActivitiesManager();
-		Double [] activity1 = { 24.59, 24.59, 14.31, 7.11 };
-		Double [] activity2 = { 24.20, 21.31, 14.31, 7.11, 13.41 };
-		Double [] activity3 = { 10.40, 24.59, 3.51, 7.03 };
-		Double [] activity4 = { 2.39, 12.19, 18.12, 22.13 };
+		NumberFormat nf = new DecimalFormat("#.##"); 
 		
-		// test results
-		Double testResult1 = 70.60;
-		Double testResult2 = 80.34;
-		Double testResult3 = 45.53;
-		Double testResult4 = 54.83;
-		String testResult = new String(String.valueOf(testResult2) + ", " +
-								   	   String.valueOf(testResult1) + ", " +
-								       String.valueOf(testResult4) + ", " +
-								       String.valueOf(testResult3) );
-		StringBuilder result = null;
+		/*
+		 * Test results
+		 */		
+		// 70.60
+		Double testResult1 = Double.valueOf(nf.format(activity1[0] + activity1[1] + activity1[2] + activity1[3]) );
+		
+		// 80.34
+		Double testResult2 = Double.valueOf(nf.format(activity2[0] + activity2[1] + activity2[2] + activity2[3] + activity2[4]) );
+		
+		// 45.53
+		Double testResult3 = Double.valueOf(nf.format(activity3[0] + activity3[1] + activity3[2] + activity3[3]) );
+		
+		// 54.83
+		Double testResult4 = Double.valueOf(nf.format(activity4[0] + activity4[1] + activity4[2] + activity4[3]) );
+		
+		String testExpectedResult = new String(String.valueOf(testResult2) + ", " +
+								   	           String.valueOf(testResult1) + ", " +
+								               String.valueOf(testResult4) + ", " +
+								               String.valueOf(testResult3) );
+		testResult = new StringBuilder();
 		
 		@SuppressWarnings("unused")
 		Double [] unsortedActivities = new Double[4],
@@ -78,20 +85,48 @@ public class TestSortActivities extends AndroidTestCase {
 		
 		ArrayList<Double> newResult = new ArrayList<Double>(Arrays.asList(sortedActivities) );
 		Collections.reverse(newResult);
-		result = new StringBuilder();
 		
 		for(i = 0; i < newResult.size(); i++) {
 			if(i == newResult.size() -1) {
-				result.append( String.valueOf(newResult.get(i) ));
+				testResult.append(String.valueOf(newResult.get(i) ));
 			}
 			else {
-				result.append( String.valueOf(newResult.get(i) ) + ", ");
+				testResult.append(String.valueOf(newResult.get(i) ) + ", ");
 			}
 		}
 		
 		// check whether sorted results match with sorted results defined
-		assertEquals(testResult, result.toString());
+		assertEquals(testExpectedResult, testResult.toString());
 		Log.e("Visus", "testResult: " + testResult);
-		Log.e("Visus", "result: " + result.toString());
+		Log.e("Visus", "result: " + testResult.toString());
+	}
+	
+	@Test
+	public void testGetActivitiesByType() {
+		HashMap<String, Double> data = new HashMap<String, Double>();
+		ArrayList<String> activities = new ArrayList<String>();
+		
+		// activities
+		activities.add("Work");
+		activities.add("Coding");
+		activities.add("Email");		
+		
+		// test data set
+		// activity 1
+		data.put("Work", activity1[0]);
+		data.put("Work", activity1[1]);
+		data.put("Work", activity1[2]);
+
+		// activity 2
+		data.put("Coding", activity2[0]);
+		data.put("Coding", activity2[1]);
+		data.put("Coding", activity2[2]);
+
+		// activity 3
+		data.put("Email", activity3[0]);
+		data.put("Email", activity3[1]);
+		data.put("Email", activity3[2]);
+		
+//		Double [] act1 = data.get(activities.get(0)); // gets work
 	}
 }
