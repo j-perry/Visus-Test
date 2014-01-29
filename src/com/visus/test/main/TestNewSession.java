@@ -1,6 +1,9 @@
 package com.visus.test.main;
 
 import java.math.BigDecimal;
+import java.util.*;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.junit.*;
 
@@ -86,6 +89,24 @@ public class TestNewSession extends AndroidTestCase {
 		}
 		
 		assertEquals(durationResult, duration);
+	}
+	
+	@Test
+	public void testGetHashMapValues() {
+		String testActivity = "hello";	// this is a really pointless variable, but never mind...
+		double testDurValExpected = 22.3;
+		double testDurValActual = 0.0;
+		HashMap<String, Double> record = new HashMap<String, Double>();
+		record.put(testActivity, testDurValExpected);
+		
+		if(!record.isEmpty() ) {
+			Iterator<Entry<String, Double>> it = record.entrySet().iterator();
+			
+			Map.Entry<String, Double> entry = (Entry<String, Double>) it.next();
+			testDurValActual = entry.getValue();
+		}	
+		
+		assertEquals(testDurValExpected, testDurValActual);
 	}
 	
 }

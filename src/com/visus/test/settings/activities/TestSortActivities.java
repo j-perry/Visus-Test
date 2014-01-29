@@ -15,6 +15,8 @@ import android.util.Log;
 
 public class TestSortActivities extends AndroidTestCase {
 	
+	private ActivitiesManager am;
+	
 	private final Double [] activity1 = { 24.59, 24.59, 14.31, 7.11 };
 	private final Double [] activity2 = { 24.20, 21.31, 14.31, 7.11, 13.41 };
 	private final Double [] activity3 = { 10.40, 24.59, 3.51, 7.03 };
@@ -39,7 +41,7 @@ public class TestSortActivities extends AndroidTestCase {
 		// for the sessions associated with each one from the db
 		// activity 'n'
 		Stack<Double []> activities = new Stack<Double []>();
-		ActivitiesManager am = new ActivitiesManager();
+		am = new ActivitiesManager();
 		NumberFormat nf = new DecimalFormat("#.##"); 
 		
 		/*
@@ -105,6 +107,9 @@ public class TestSortActivities extends AndroidTestCase {
 	public void testGetActivitiesByType() {
 		HashMap<String, Double> data = new HashMap<String, Double>();
 		ArrayList<String> activities = new ArrayList<String>();
+		Double [] unsortedActivities = null,
+				  sortedActivities = null;
+		am = new ActivitiesManager();
 		
 		// activities
 		activities.add("Work");
@@ -113,7 +118,7 @@ public class TestSortActivities extends AndroidTestCase {
 		
 		// test data set
 		// activity 1
-		data.put("Work", activity1[0]);
+		data.put("Work", activity1[0]);	// key | value
 		data.put("Work", activity1[1]);
 		data.put("Work", activity1[2]);
 
@@ -127,6 +132,32 @@ public class TestSortActivities extends AndroidTestCase {
 		data.put("Email", activity3[1]);
 		data.put("Email", activity3[2]);
 		
-//		Double [] act1 = data.get(activities.get(0)); // gets work
+		Iterator itr = data.entrySet().iterator();
+		
+		// we will need to find out how many keys there are currently
+		Double activity1 = null, 
+			   activity2 = null, 
+			   activity3 = null;
+		
+		while(itr.hasNext() ) {
+			Map.Entry<String, Double> entry = (Map.Entry) itr.next();
+						
+			if(entry.getKey().equals(activities.get(0)) ) {	// "Work"
+				// take the prev value and store with the next value
+				activity1 = (activity1 + entry.getValue() );
+			}
+			else if(entry.getKey().equals(activities.get(1) )) { // "Coding"
+				// ...
+				activity2 = (activity2 + entry.getValue() );
+			}
+			else if(entry.getKey().equals(activities.get(2) )) { // "Email"
+				// ...
+				activity3 = (activity3 + entry.getValue() );
+			}
+ 		}
+		
+		sortedActivities = am.sort(unsortedActivities);
+		
+		
 	}
 }
