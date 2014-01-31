@@ -1,5 +1,6 @@
 package com.visus.test.entities;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,6 +8,7 @@ import java.util.Date;
 import org.junit.*;
 
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import com.visus.entities.sessions.Session;
 
@@ -119,5 +121,56 @@ public class TestSession extends AndroidTestCase {
 		durationMonth = (float) tmpDurationMonth;
 						
 		assertEquals(testResult, durationMonth);
+	}
+	
+	@Test
+	public void testFormatSessionDuration() {
+		DecimalFormat df = new DecimalFormat("0.00");
+		
+		// expected result		
+		double testRecordDuration = 4.07;
+		
+		// both used to produce the 'actual' result
+		int sessionMins = 3,
+			sessionSecs = 67;
+		
+		double recordDuration = 0.0,
+			   recordDurationMins = 0.0,
+			   recordDurationSecs = 0.0;
+		
+		double tmpRecord = 0.0;
+		
+		String strRecord = null;
+		
+		if(sessionMins != 0) {
+			strRecord = df.format(sessionMins);
+			recordDurationMins = Double.valueOf(strRecord); // format minutes as m.00
+		}		
+		
+		recordDurationSecs = ((double) sessionSecs / 100);
+		recordDuration += (recordDurationMins + recordDurationSecs);
+		Log.e("Visus", "recordDuration: " + recordDuration);
+						
+		if((recordDuration % 1) > 0.6) {
+			Log.e("Visus", "wohoo: " + recordDuration);
+			tmpRecord = recordDuration; // 1.0
+			recordDuration = 1.0;
+			recordDuration += tmpRecord - 0.6;
+			
+			// convert to .2 decimal places for precision
+			strRecord = df.format(recordDuration);
+			recordDuration = Double.valueOf(strRecord);
+			
+			Log.e("Visus", "Session: " + df.format(recordDuration));
+		}
+		else {
+			Log.e("Visus", "NOT TRUE: " + recordDuration); // 0.4 - 0.2 (x2)
+		}
+		
+		assertEquals(testRecordDuration, recordDuration);
+	}
+	
+	public void testFormatSessionDurations() {
+		
 	}
 }
