@@ -170,7 +170,94 @@ public class TestSession extends AndroidTestCase {
 		assertEquals(testRecordDuration, recordDuration);
 	}
 	
+	@Test
 	public void testFormatSessionDurations() {
+		DecimalFormat df = new DecimalFormat("0.00");
 		
+		// expected result		
+		double testRecordDuration = 5.29;
+		
+		// both used to produce the 'actual' result
+		// NB: session seconds will not be above 60 secs
+		int sessionMins = 3,
+			sessionSecs = 55;
+		
+		double recordDuration = 0.0,
+			   recordDurationMins = 0.0,
+			   recordDurationSecs = 0.0;
+		
+		double exRecordDuration = 1.34; // input
+		
+		double tmpRecord = 0.0;
+		
+		String strRecord = null;
+		
+		/*
+		 * 	First pass - previous session/s
+		 */
+		if((exRecordDuration % 1) > 0.6) {
+			tmpRecord = exRecordDuration;
+			exRecordDuration = 1.0;
+			exRecordDuration += tmpRecord - 0.6;				
+
+			// convert to .2 decimal places for precision
+			strRecord = df.format(exRecordDuration);
+			exRecordDuration = Double.valueOf(exRecordDuration);
+			
+			Log.e("Visus", "Exrecord: " + df.format(exRecordDuration));
+		}
+		else {
+			recordDuration = exRecordDuration;
+		}
+		
+		
+		/* 
+		 * 	Second pass - session just passed
+		 */
+		// if any minutes have been accumulated
+		if(sessionMins != 0) {
+			strRecord = df.format(sessionMins);
+			recordDurationMins = Double.valueOf(strRecord); // format minutes as m.00
+		}
+		
+		recordDurationSecs = ((double) sessionSecs / 100);
+		recordDuration += (recordDurationMins + recordDurationSecs);
+		Log.e("Visus", "recordDuration: " + recordDuration);
+						
+		if((recordDuration % 1) > 0.6) {
+			Log.e("Visus", "wohoo: " + recordDuration);
+			tmpRecord = recordDuration; // 1.0
+			recordDuration = 1.0;
+			recordDuration += tmpRecord - 0.6;
+			
+			// convert to .2 decimal places for precision
+			strRecord = df.format(recordDuration);
+			recordDuration = Double.valueOf(strRecord);
+			
+			Log.e("Visus", "Session: " + df.format(recordDuration));
+		}
+		else {
+			Log.e("Visus", "NOT TRUE: " + recordDuration); // 0.4 - 0.2 (x2)
+		}
+		
+		
+		/**
+		 * 	Third pass
+		 */
+		if((recordDuration % 1) > 0.6) {
+			tmpRecord = (recordDuration + exRecordDuration);
+			recordDuration = 1.0 + (tmpRecord - 0.6);
+
+			// convert to .2 decimal places for precision
+			strRecord = df.format(recordDuration);
+			recordDuration = Double.valueOf(strRecord);
+			
+			Log.e("Visus", "Final result: " + df.format(recordDuration));
+		}
+		else {
+			Log.e("Visus", "Final result: " + recordDuration);
+		}
+		
+		assertEquals(testRecordDuration, recordDuration);
 	}
 }
